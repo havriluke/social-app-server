@@ -1,0 +1,71 @@
+@import '../App.css';
+
+.drop-down {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    background-color: none;
+    border-radius: 50%;
+    transition: all .3s ease 0s;
+    z-index: 1;
+}
+.drop-down:hover, .drop-down.active {
+    background-color: var(--font-pale-color);
+}
+
+.drop-down__logo {
+
+}
+
+.drop-down__list {
+    display: flex;
+    position: absolute;
+    flex-direction: column;
+    width: max-content;
+    overflow: hidden;
+    background-color: var(--block-color);
+    border-radius: var(--block-radius);
+    box-shadow: 0 0 3px var(--base-color);
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    transition: all .3s ease 0s;
+}
+.drop-down.active > .drop-down__list {
+    opacity: 1;
+    visibility: visible;
+}
+
+.drop-down__item {
+    padding: 5px 15px;
+    background-color: none;
+    transition: all .3s ease 0s;
+    border-bottom: 1px solid var(--font-pale-color);
+}
+.drop-down__item:first-child {
+    padding-top: 10px;
+}
+.drop-down__item:last-child {
+    padding-bottom: 10px;
+    border: none;
+}
+.drop-down__item.title {
+    text-align: center;
+    font-weight: bold;
+    cursor: default;
+    background-color: var(--block-color);
+}
+.drop-down__item.red {
+    color: var(--red-color);
+}
+.drop-down__item:hover {
+    background-color: var(--button-pale-color);
+}
+.drop-down__item.red:hover {
+    background-color: var(--red-pale-color);
+}
+.drop-down__item.title:hover {
+    background-color: var(--block-color);
+}

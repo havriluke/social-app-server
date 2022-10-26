@@ -1,0 +1,62 @@
+@import '../App.css';
+
+.auth {
+    max-width: 540px;
+    padding: 30px 20px;
+    position: relative;
+    box-shadow: none;
+}
+
+.auth__form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.auth__title {
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.auth__input {
+    width: 100%;
+}
+
+.form__buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.auth_change-type {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.change-type__text {
+
+}
+
+.change-type__button {
+    cursor: pointer;
+    color: var(--base-color);
+    text-decoration: underline;
+}
+.change-type__button:hover {
+    text-decoration: none;
+}
+
+.auth__button {
+
+}
+
+
+
+@media (max-width: 460px) {
+    .change-type__text {
+        display: none;
+    }
+}

@@ -1,0 +1,49 @@
+@import '../App.css';
+
+.loader {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.loader__item {
+    width: 30px;
+    height: 30px;
+    background-color: var(--base-color);
+    border-radius: 50%;
+    opacity: .25;
+}
+
+.loader__item_1 {
+    animation: anim1 .5s 0s infinite alternate-reverse;
+}
+.loader__item_2 {
+    animation: anim1 .5s .5s infinite alternate-reverse;
+}
+.loader__item_3 {
+    animation: anim1 .5s .25s infinite alternate-reverse;
+}
+
+@keyframes anim1 {
+    from {
+        transform: scale(1);
+        opacity: .25;
+    } to {
+        transform: scale(1.2);
+        opacity: .75;
+    }
+}
+
+.list-loader {
+    position: static;
+    gap: 5px;
+    padding: 20px 0;
+}
+.list-loader .loader__item {
+    width: 10px;
+    height: 10px;
+}

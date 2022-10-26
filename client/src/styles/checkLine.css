@@ -1,0 +1,52 @@
+@import '../App.css';
+
+:root {
+    --width: 100px;
+    --gap: 10px;
+}
+
+.check-line {
+}
+
+.check-line__list {
+    width: min-content;
+    display: flex;
+    gap: var(--gap);
+    padding: 3px;
+    background-color: var(--font-pale-color);
+    border-radius: var(--block-radius);
+}
+
+.check-line__item {
+    width: var(--width);
+    text-align: center;
+    padding: 2px 10px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: var(--block-radius);
+    background-color: none;
+    cursor: pointer;
+    transition: all .3s ease 0s;
+}
+.check-line__item:hover {
+    background-color: var(--bg-color);
+}
+.check-line__item.active {
+    background-color: var(--block-color);
+    /* color: var(--block-color); */
+}
+
+
+
+@media (max-width: 460px) {
+    .check-line__item {
+        font-size: 12px;
+        padding: 2px 5px;
+    }
+}
+@media (max-width: 400px) {
+    .check-line__item {
+        font-size: 10.5px;
+        width: 70px;
+    }
+}

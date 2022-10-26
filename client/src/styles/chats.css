@@ -1,0 +1,131 @@
+@import '../App.css';
+
+.chats {
+
+}
+
+.chats__list {
+    position: relative;
+    min-height: calc(100vh - 160px);
+}
+
+.chats__item {
+    display: flex;
+}
+
+
+.chat-item {
+    padding: 15px 15px;
+    gap: 10px;
+    cursor: pointer;
+}
+.chat-item:hover {
+    background-color: var(--button-pale-color)
+}
+
+.chat-item__photo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.chat-item__content {
+    flex: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    gap: 3px;
+}
+
+.chat-item__top {
+    display: flex;
+    justify-content: space-between;
+}
+
+.chat-item__info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.chat-item__nickname {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.chat-item__datetime {
+    font-size: 12px;
+    color: var(--button-color);
+}
+
+.chat-item__bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chat-item__text-line {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.chat-item__author {
+    color: var(--button-color);
+}
+
+.chat-item__text {
+    max-height: 20px;
+    overflow: hidden;
+}
+
+.chat-item__icons {
+
+}
+
+.chat-item__icon {
+    background-color: var(--button-color);
+    border-radius: 50%;
+    margin: 0 10px 0 30px;
+}
+.chat-item__icon_s {
+    min-width: 7px;
+    min-height: 7px;
+}
+.chat-item__icon_r {
+    /* font-weight: bold; */
+    min-width: 20px;
+    min-height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.chat-item__icon_r > div {
+    font-size: 14px;
+    color: var(--block-color);
+}
+
+
+.chat-item__drop-down, .chat-item__drop-down > img {
+    width: 20px;
+    height: 20px;
+}
+
+@media (max-width: 620px) {
+    .chats__list {
+        min-height: calc(100vh - 130px);
+    }
+}
+@media (max-width: 460px) {
+    .chat-item__datetime {
+        font-size: 10px;
+    }
+    .chat-item__info {
+        gap: 5px;
+    }
+}
+@media (max-width: 400px) {
+    .chat-item__datetime {
+        display: none;
+    }
+}
