@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import React, { useContext, useState } from 'react'
 import { Context } from '..'
+import { REACT_APP_API_URL } from '../utils/const'
 
 const Avatar = observer(({className, image, size, authorId, online, profile}) => {
     const {socket} = useContext(Context)
@@ -18,7 +19,7 @@ const Avatar = observer(({className, image, size, authorId, online, profile}) =>
             <div className={`avatar ${className}`}>
                 <div
                     className='avatar__image'
-                    style={{backgroundImage: `url(${process.env.REACT_APP_API_URL}${image})`, width: size, height: size}}>
+                    style={{backgroundImage: `url(${REACT_APP_API_URL}${image})`, width: size, height: size}}>
                 </div>
             </div>
             {online && isOnline && <div className='avatar__online'

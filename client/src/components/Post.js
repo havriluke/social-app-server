@@ -9,7 +9,7 @@ import spy from '../assets/logos/spy-fill.svg'
 import pencil from '../assets/logos/pencil-fill.svg'
 import '../styles/post.css'
 import { useNavigate } from 'react-router-dom'
-import { PAGE_ROUTE } from '../utils/const'
+import { PAGE_ROUTE, REACT_APP_API_URL } from '../utils/const'
 import { observer } from 'mobx-react-lite'
 import { Context } from '..'
 import Comments from './Comments'
@@ -69,7 +69,7 @@ const Post = observer(({item, deleteFunc, editFunc}) => {
                     }
                 </div>
                 {item.photo && <div className='post__photo' onDoubleClick={clickLike} >
-                    <img src={process.env.REACT_APP_API_URL+item.photo} />
+                    <img src={REACT_APP_API_URL+item.photo} />
                 </div>}
             </div>
 
