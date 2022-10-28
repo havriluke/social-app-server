@@ -8,6 +8,7 @@ const fileUpload = require('express-fileupload')
 const http = require('http')
 const errorHandler = require('./server/middleware/errorHandlingMiddleware')
 const path = require('path')
+const proxy = require('http-proxy-middleware')
 
 const app = express()
 
@@ -25,6 +26,10 @@ const io = require('socket.io')(server, {
         origin: "http://localhost:3000"
     }
 })
+
+module.exports = function(app) {
+    app.use(proxy(['/api' ], { target: 'http://localhost:5000' }));
+}
 
 
 const start = async () => {

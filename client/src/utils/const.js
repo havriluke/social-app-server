@@ -7,4 +7,4 @@ export const CHATS_ROUTE = '/chats'
 export const CHAT_ROUTE = '/chat'
 export const MAIN_ROUTE = '/'
 
-export const REACT_APP_API_URL = 'https://social-kreep.herokuapp.com/'
+export const REACT_APP_API_URL = 'http://localhost:5000/'
