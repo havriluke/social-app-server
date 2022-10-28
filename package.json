@@ -7,8 +7,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js",
     "start": "set PORT=3000 & react-app-rewired start",
+    "begin": "node index.js",
+    "dev": "nodemon index.js",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject"
