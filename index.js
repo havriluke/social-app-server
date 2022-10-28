@@ -1,26 +1,22 @@
 require('dotenv').config()
 const express = require('express')
-const sequelize = require('./server/db')
+const sequelize = require('./db')
 const cors = require('cors')
 const PORT = process.env.PORT || 5000
-const router = require('./server/routes/index')
+const router = require('./routes/index')
 const fileUpload = require('express-fileupload')
 const http = require('http')
-const errorHandler = require('./server/middleware/errorHandlingMiddleware')
+const errorHandler = require('./middleware/errorHandlingMiddleware')
 const path = require('path')
-const proxy = require('http-proxy-middleware')
 
 const app = express()
 
 app.use(cors())
 app.use(express.json())
-app.use(express.static(path.resolve(__dirname, 'server', 'static')))
-app.use(express.static(path.join(__dirname, 'client')))
+app.use(express.static(path.resolve(__dirname, 'static')))
+// app.use(express.static(path.join(__dirname, 'client')))
 app.use(fileUpload({}))
 app.use('/api', router)
-// app.use((req, res, next) => {
-//     res.sendFile(__dirname + "client/");
-// });
 app.use(errorHandler)
 
 const server = http.createServer(app)
@@ -29,13 +25,6 @@ const io = require('socket.io')(server, {
         origin: "http://localhost:3000"
     }
 })
-
-module.exports = function(app) {
-    app.use(proxy(['/api' ], { target: 'http://localhost:5000' }));
-}
-
-console.log(100000);
-
 
 const start = async () => {
     try {
