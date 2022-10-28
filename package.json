@@ -7,8 +7,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "set PORT=3000 & react-app-rewired start",
-    "begin": "node index.js",
+    "start": "concurrently --kill-others \"node index.js\" \"set PORT=3000 & react-app-rewired start\"",
     "dev": "nodemon index.js",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
@@ -64,6 +63,7 @@
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
+    "concurrently": "^7.5.0",
     "nodemon": "^2.0.19"
   }
 }
