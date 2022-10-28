@@ -27,9 +27,9 @@ const io = require('socket.io')(server, {
     }
 })
 
-// module.exports = function(app) {
-//     app.use(proxy(['/api' ], { target: 'http://localhost:5000' }));
-// }
+module.exports = function(app) {
+    app.use(proxy(['/api' ], { target: 'http://localhost:5000' }));
+}
 
 
 const start = async () => {
