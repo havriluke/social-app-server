@@ -15,9 +15,12 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 app.use(express.static(path.resolve(__dirname, 'server', 'static')))
-app.use(express.static(path.join(__dirname, 'client')))
+// app.use(express.static(path.join(__dirname, 'client')))
 app.use(fileUpload({}))
 app.use('/api', router)
+// app.use((req, res, next) => {
+//     res.sendFile(__dirname + "client/");
+// });
 app.use(errorHandler)
 
 const server = http.createServer(app)
@@ -30,6 +33,8 @@ const io = require('socket.io')(server, {
 module.exports = function(app) {
     app.use(proxy(['/api' ], { target: 'http://localhost:5000' }));
 }
+
+console.log(100000);
 
 
 const start = async () => {
