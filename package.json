@@ -7,7 +7,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "concurrently --kill-others \"node index.js\" \"set PORT=3000 & react-app-rewired start\"",
+    "start": "node index.js",
     "dev": "nodemon index.js",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
