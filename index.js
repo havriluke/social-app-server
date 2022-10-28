@@ -22,7 +22,7 @@ app.use(errorHandler)
 const server = http.createServer(app)
 const io = require('socket.io')(server, {
     cors: {
-        origin: "https://social-kreep.herokuapp.com/"
+        origin: "https://social-kreep-server.herokuapp.com/"
     }
 })
 
