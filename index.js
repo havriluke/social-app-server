@@ -14,17 +14,12 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 app.use(express.static(path.resolve(__dirname, 'static')))
-// app.use(express.static(path.join(__dirname, 'client')))
 app.use(fileUpload({}))
 app.use('/api', router)
 app.use(errorHandler)
 
 const server = http.createServer(app)
-const io = require('socket.io')(server, {
-    cors: {
-        origin: "*"
-    }
-})
+const io = require('socket.io')(server, { cors: { origin: "*" } })
 
 const start = async () => {
     try {

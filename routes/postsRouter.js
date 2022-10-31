@@ -13,6 +13,7 @@ router.get('/like', authMiddleware, postsController.getLikes)
 router.post('/comment', authMiddleware, postsController.createComment)
 router.get('/comment', authMiddleware, postsController.getComments)
 router.delete('/comment', authMiddleware, postsController.deleteComment)
+router.post('/photo', authMiddleware, postsController.uploadPhoto)
 
 
 module.exports = router
