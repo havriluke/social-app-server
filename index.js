@@ -16,9 +16,9 @@ app.use(express.json())
 app.use(express.static(path.resolve(__dirname, 'static')))
 app.use(fileUpload({}))
 app.use((req, res, next) => {
-    res.append('Access-Control-Allow-Origin', 'https://social-kreep.herokuapp.com');
-    res.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    res.append('Access-Control-Allow-Headers', 'Content-Type');
+    res.set('Access-Control-Allow-Origin', 'https://social-kreep.herokuapp.com');
+    res.set('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.set('Access-Control-Allow-Headers', 'Content-Type');
     next();
 })
 app.use('/api', router)
