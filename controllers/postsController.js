@@ -11,7 +11,7 @@ class PostsController {
     async create(req, res, next) {
         const userId = req.user.id
         const {text, isPrivate} = req.body
-        if (!text.trim().length || text.length > 500) {
+        if (text.length > 500 || !text.trim().length && !req.files) {
             return next(ApiError.badRequest('Invalid post body'))
         }
         let post = await Posts.create({datetime: Date.now(), userId, text, private: isPrivate, edit: false})
