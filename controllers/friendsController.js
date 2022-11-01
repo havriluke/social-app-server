@@ -1,6 +1,6 @@
 const ApiError = require('../error/ApiError')
 const {Op} = require('sequelize')
-const {Users, Friends, Photos} = require('../models/models')
+const {Users, Friends } = require('../models/models')
 const sequelize = require('sequelize')
 
 class FriendsController {
@@ -11,7 +11,7 @@ class FriendsController {
         limit = parseInt(limit)
         page = parseInt(page)
         let offset = limit * page - limit
-        const users = await Users.findAndCountAll({where: {id: {[Op.not]: userId}}, limit, offset, include: Photos})
+        const users = await Users.findAndCountAll({where: {id: {[Op.not]: userId}}, limit, offset})
         return res.json(users)
     }
 
@@ -24,7 +24,7 @@ class FriendsController {
         limit = parseInt(limit)
         page = parseInt(page)
         let offset = limit * page - limit
-        const users = await Users.findAndCountAll({where: {nickname: {[Op.substring]: nickname}}, limit, offset, include: Photos})
+        const users = await Users.findAndCountAll({attributes: ['id', 'nickname', 'photo'], where: {nickname: {[Op.substring]: nickname}}, limit, offset})
         return res.json(users)
     }
 
@@ -38,7 +38,7 @@ class FriendsController {
         const friendsId = friendships.map(fs => {
             return fs.userId === id ? fs.friendId : fs.userId
         })
-        const people = await Users.findAndCountAll({ attributes: ['id', 'nickname'], where: { id: friendsId }, limit, offset, include: Photos })
+        const people = await Users.findAndCountAll({ attributes: ['id', 'nickname', 'photo'], where: { id: friendsId }, limit, offset })
         return res.json(people)
     }
 
@@ -50,7 +50,7 @@ class FriendsController {
         let offset = limit * page - limit
         const requestsTo = await Friends.findAll({ where: {friendId: id, accepted: false} })
         const friendsId = requestsTo.map(fs => fs.userId)
-        const people = await Users.findAndCountAll({ attributes: ['id', 'nickname'], where: { id: friendsId }, limit, offset, include: Photos })
+        const people = await Users.findAndCountAll({ attributes: ['id', 'nickname', 'photo'], where: { id: friendsId }, limit, offset})
         return res.json(people)
     }
 
@@ -62,7 +62,7 @@ class FriendsController {
         let offset = limit * page - limit
         const requestsFrom = await Friends.findAll({ where: {userId: id, accepted: false} })
         const friendsId = requestsFrom.map(fs => fs.friendId)
-        const people = await Users.findAndCountAll({ attributes: ['id', 'nickname'], where: { id: friendsId }, limit, offset, include: Photos })
+        const people = await Users.findAndCountAll({ attributes: ['id', 'nickname', 'photo'], where: { id: friendsId }, limit, offset })
         return res.json(people)
     }
 
@@ -102,7 +102,7 @@ class FriendsController {
         const friendsId = friendships.map(fs => {
             return fs.userId === id ? fs.friendId : fs.userId
         })
-        const friends = await Users.findAndCountAll({ attributes: ['id', 'nickname'], where: { id: friendsId }, limit, offset, include: Photos })
+        const friends = await Users.findAndCountAll({ attributes: ['id', 'nickname', 'photo'], where: { id: friendsId }, limit, offset })
         return res.json(friends)
     }
 

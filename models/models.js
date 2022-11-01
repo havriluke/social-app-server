@@ -6,7 +6,8 @@ const Users = sequelize.define('users', {
     nickname: { type: DataTypes.STRING, allowNull: false, unique: true },
     password: { type: DataTypes.STRING, allowNull: false },
     role: { type: DataTypes.STRING, defaultValue: 'USER' },
-    banStatus: { type: DataTypes.BIGINT, defaultValue: 0 }
+    banStatus: { type: DataTypes.BIGINT, defaultValue: 0 },
+    photo: { type: DataTypes.STRING }
 })
 
 const Posts = sequelize.define('posts', {
@@ -16,7 +17,8 @@ const Posts = sequelize.define('posts', {
     edit: {type: DataTypes.BOOLEAN, defaultValue: false},
     private: { type: DataTypes.BOOLEAN, defaultValue: false },
     likesCount: {type: DataTypes.INTEGER, defaultValue: 0 },
-    commentsCount: {type: DataTypes.INTEGER, defaultValue: 0 }
+    commentsCount: {type: DataTypes.INTEGER, defaultValue: 0 },
+    photo: { type: DataTypes.STRING }
 })
 
 const Likes = sequelize.define('likes', {
@@ -45,12 +47,6 @@ const Chats = sequelize.define('chats', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true }
 })
 
-const Photos = sequelize.define('photos', {
-    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    data: { type: DataTypes.BLOB('medium') },
-    name: { type: DataTypes.STRING }
-})
-
 Users.hasMany(Posts)
 Posts.belongsTo(Users)
 
@@ -72,12 +68,6 @@ Likes.belongsTo(Posts)
 Posts.hasMany(Comments)
 Comments.belongsTo(Posts)
 
-Photos.hasOne(Users)
-Users.belongsTo(Photos)
-
-Photos.hasOne(Posts)
-Posts.belongsTo(Photos)
-
 Users.belongsToMany(Users, { as: 'userOne', foreignKey: 'userOneId', through: Chats })
 Users.belongsToMany(Users, { as: 'userTwo', foreignKey: 'userTwoId', through: Chats })
 
@@ -86,5 +76,5 @@ Users.belongsToMany(Users, { as: 'friend', foreignKey: 'friendId', through: Frie
 
 
 module.exports = {
-    Users, Posts, Likes, Comments, Messages, Friends, Chats, Photos
+    Users, Posts, Likes, Comments, Messages, Friends, Chats
 }

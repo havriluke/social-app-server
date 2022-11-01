@@ -1,4 +1,4 @@
-const {Messages, Users, Friends, Chats, Photos} = require('../models/models')
+const {Messages, Users, Friends, Chats } = require('../models/models')
 const ApiError = require('../error/ApiError')
 const {Op} = require('sequelize')
 const sequelize = require('sequelize')
@@ -80,9 +80,9 @@ class MessagesController {
         }, group: 'chatId'})
         const messages = await Messages.findAndCountAll({where: {id: {[Op.or]: [...lastMessagesId.map(l => l.dataValues.maxId)]}},
             order: [['datetime', 'DESC']], limit, offset, include: {model: Chats, attributes: ['id', 'userOneId', 'userTwoId']}})
-        const companions = await Users.findAll({ attributes: ['id', 'nickname'], where: {
+        const companions = await Users.findAll({ attributes: ['id', 'nickname', 'photo'], where: {
             id: {[Op.or]: [...messages.rows.map(m => m.dataValues.chat.userTwoId === userId ? m.dataValues.chat.userOneId : m.dataValues.chat.userTwoId)]}
-        }, include: {model: Photos, attributes: ['name']}})
+        }})
         messages.rows.forEach(m => {
             m.dataValues['companion'] = companions.filter(com => [m.dataValues.chat.userOneId, m.dataValues.chat.userTwoId].includes(com.dataValues.id))[0]
             m.dataValues['unreadCount'] = unreadMessages.filter(um => um.dataValues.chat.id === m.dataValues.chat.id).length
@@ -102,7 +102,7 @@ class MessagesController {
         limit = parseInt(limit) || 50
         let offset = page * limit - limit
         const messages = await Messages.findAndCountAll({where: { chatId: chat.id }, limit, offset, order: [['datetime', 'DESC']], include: {
-            model: Users, attributes: ['id', 'nickname']
+            model: Users, attributes: ['id', 'nickname', 'photo']
         }})
         return res.json(messages)
     }

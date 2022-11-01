@@ -1,9 +1,10 @@
 const ApiError = require('../error/ApiError')
-const {Posts, Likes, Comments, Friends, Users, Photos} = require('../models/models')
+const {Posts, Likes, Comments, Friends, Users } = require('../models/models')
 const {Op} = require('sequelize')
 const path = require('path')
 const fs = require('fs')
 const uuid = require('uuid')
+const imgbbUploader = require('imgbb-uploader')
 
 class PostsController {
 
@@ -14,31 +15,24 @@ class PostsController {
             return next(ApiError.badRequest('Invalid post body'))
         }
         let post = await Posts.create({datetime: Date.now(), userId, text, private: isPrivate, edit: false})
-        let photoModel = null
         post = await Posts.findOne({where: {id: post.id}, include: Users})
         try {
             const {photo} = req.files
-            let filename = uuid.v4() + '.webp'
-            photo.mv(path.resolve(__dirname, '..', 'static', filename))
-            const base64Data = new Buffer.from(photo.data, 'base64')
-            photoModel = await Photos.create({data: base64Data, name: filename})
-            await post.update({photoId: photoModel.id})
+            const base64string = new Buffer.from(photo.data, 'base64').toString('base64')
+            const {url} = await imgbbUploader({name: `p${userId}`, apiKey: process.env.IMGBB_API_KEY, base64string})
+            await post.update({photo: url})
         } catch(e) {
             console.log(e);
         }
-        return res.json({post, photo: photoModel})
+        return res.json(post)
     }
 
     async remove(req, res, next) {
         const userId = req.user.id
         const {id} = req.body
-        const post = await Posts.findOne({where: {id}, include: {model: Photos, attributes: ['id']}})
+        const post = await Posts.findOne({where: {id}})
         if (post.userId !== userId && req.user.role !== "ADMIN" || !post) {
             return next(ApiError.internal('You can delete only own posts'))
-        }
-        if (post.photo) { 
-            fs.unlink(path.join(__dirname, '..', 'static', post.photo.name), (err) => {if (err) throw err})
-            await Photos.destroy({where: {id: post.photo.id}})
         }
         await Likes.destroy({where: {postId: id}})
         await Comments.destroy({where: {postId: id}})
@@ -57,7 +51,7 @@ class PostsController {
             return next(ApiError.badRequest('Invalid post body'))
         }
         await post.update({text, private: isPrivate, edit: true})
-        post = await Posts.findOne({where: {id}, include: [Users, {model: Photos, attributes: ['name']}]})
+        post = await Posts.findOne({where: {id}, include: Users})
         return res.json(post)
     }
 
@@ -74,8 +68,7 @@ class PostsController {
         const posts = await Posts.findAndCountAll({where: {
             [Op.or]: [{userId: friendsId}, {userId}]
         }, limit, offset, order: [['datetime', 'DESC']], include: [
-            { model: Users, attributes: ['id', 'nickname'], include: {model: Photos, attributes: ['name']} },
-            { model: Photos, attributes: ['name'] }
+            { model: Users, attributes: ['id', 'nickname', 'photo'] }
         ]})
         return res.json(posts)  
     }
@@ -93,13 +86,11 @@ class PostsController {
         let posts
         if (friendship || userId === id || req.user.role === 'ADMIN') {
             posts = await Posts.findAndCountAll({where: {userId: id}, limit, offset, order: [['datetime', 'DESC']], include: [
-                {model: Users, attributes: ['id', 'nickname'], include: {model: Photos, attributes: ['name']}},
-                {model: Photos, attributes: ['name']}
+                {model: Users, attributes: ['id', 'nickname', 'photo']}
             ]})
         } else {
             posts = await Posts.findAndCountAll({where: {userId: id, private: false}, limit, offset, order: [['datetime', 'DESC']], include: [
-                {model: Users, attributes: ['id', 'nickname'], include: {model: Photos, attributes: ['name']}},
-                {model: Photos, attributes: ['name']}
+                {model: Users, attributes: ['id', 'nickname', 'photo']}
             ]})
         }
         return res.json(posts)
@@ -184,15 +175,6 @@ class PostsController {
             model: Users, attributes: ['id']
         }})
         return res.json(likes)
-    }
-
-    async uploadPhoto(req, res, next) {
-        const {name} = req.body
-        if (fs.readdirSync(path.resolve(__dirname, '..', 'static')).includes(name)) return res.send('Photo has already loaded')
-        const file = await Photos.findOne({where: {name}})
-        const bufferData = new Buffer.from(file.data, 'base64')
-        fs.writeFileSync(path.resolve(__dirname, '..', 'static', file.name), bufferData)
-        return res.send('Photo was successfully loaded')
     }
 
 }
